@@ -53,7 +53,10 @@ public class UnlockFrame extends JFrame {
         super( "Unlock Master Password" );
         this.signInCallback = signInCallback;
 
-        setDefaultCloseOperation( DISPOSE_ON_CLOSE );
+        if (Config.get().disposeOnClose())
+            setDefaultCloseOperation( DISPOSE_ON_CLOSE );
+        else
+            setDefaultCloseOperation( EXIT_ON_CLOSE );
         addWindowFocusListener( new WindowAdapter() {
             @Override
             public void windowGainedFocus(final WindowEvent e) {

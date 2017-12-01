@@ -28,6 +28,7 @@ import com.lyndir.masterpassword.MPConstant;
 public class Config {
 
     private static final Config instance = new Config();
+    private static final boolean isMac = System.getProperty("os.name").toLowerCase().equals("mac os x");
 
     public static Config get() {
         return instance;
@@ -35,5 +36,13 @@ public class Config {
 
     public boolean checkForUpdates() {
         return ConversionUtils.toBoolean( System.getenv( MPConstant.env_checkUpdates ) ).or( true );
+    }
+
+    public boolean disposeOnClose() {
+        return isMac;
+    }
+
+    public boolean closeOnPasswordCopy() {
+        return isMac;
     }
 }

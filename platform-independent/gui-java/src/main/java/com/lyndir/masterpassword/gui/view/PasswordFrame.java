@@ -28,6 +28,7 @@ import com.google.common.primitives.UnsignedInteger;
 import com.google.common.util.concurrent.*;
 import com.lyndir.lhunath.opal.system.util.ObjectUtils;
 import com.lyndir.masterpassword.*;
+import com.lyndir.masterpassword.gui.Config;
 import com.lyndir.masterpassword.gui.Res;
 import com.lyndir.masterpassword.gui.util.Components;
 import com.lyndir.masterpassword.gui.util.UnsignedIntegerModel;
@@ -70,7 +71,10 @@ public abstract class PasswordFrame<U extends MPUser<S>, S extends MPSite> exten
         super( "Master Password" );
         this.user = user;
 
-        setDefaultCloseOperation( DISPOSE_ON_CLOSE );
+        if (Config.get().disposeOnClose())
+            setDefaultCloseOperation( DISPOSE_ON_CLOSE );
+        else
+            setDefaultCloseOperation( EXIT_ON_CLOSE );
         setContentPane( root = Components.gradientPanel( new FlowLayout(), Res.colors().frameBg() ) );
         root.setLayout( new BoxLayout( root, BoxLayout.PAGE_AXIS ) );
         root.setBorder( BorderFactory.createEmptyBorder( 20, 20, 20, 20 ) );
@@ -107,7 +111,10 @@ public abstract class PasswordFrame<U extends MPUser<S>, S extends MPSite> exten
                                 passwordField.setText( null );
                                 siteNameField.setText( null );
 
-                                dispatchEvent( new WindowEvent( PasswordFrame.this, WindowEvent.WINDOW_CLOSING ) );
+                                if (Config.get().closeOnPasswordCopy())
+                                    dispatchEvent( new WindowEvent( PasswordFrame.this, WindowEvent.WINDOW_CLOSING ) );
+                                else
+                                    PasswordFrame.this.setState(Frame.ICONIFIED);
                             }
                         } );
                     }
